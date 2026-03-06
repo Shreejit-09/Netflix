@@ -1,6 +1,5 @@
 import Browse from "./Browse";
 import Login from "./Login";
-import Homepage from "./Homepage";
 import {RouterProvider, createBrowserRouter} from "react-router-dom";
 
 const Body = () => {
