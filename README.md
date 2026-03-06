@@ -26,3 +26,5 @@
         @tailwind components;
         @tailwind utilities;
 
+- Header
+- Login form

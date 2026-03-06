@@ -1,14 +1,8 @@
-import './App.css'
+import "./App.css";
+import Body from "./components/Body";
 
 function App() {
-
-  return (
-    
-      <div>
-    <h1 className="text-3xl font-bold text-red-500"> Hii!! Welcome to Netflix</h1>
-     </div>
-    
-  )
+  return <Body />;
 }
 
-export default App
+export default App;
