@@ -28,3 +28,24 @@
 
 - Header
 - Login form
+- Validating the inputs
+- useRef hook
+- Deploying project
+    - npm install -g firebase-tools
+    - firebase login
+    - firebase init hosting
+    - npm run build
+    - firebase deploy --only hosting
+- Create Signup and Signin functionality to actually add and validate the user
+- Created Redux Store 
+- Implemented Sign out
+- update Profile
+- BugFix: Sign up user displayName
+- BugFix:  Redirect
+            - if user not logged in to "/"
+            - if user logged in to "/browse
+- Unsubscribe to onAuthStateChange, so that when component unmounts, we also unsubscribe to it.
+- add hardcoded data to contants file
+- Register to TMDB and add an app
+- Get Dta from TMDB "now playing" list API
+-

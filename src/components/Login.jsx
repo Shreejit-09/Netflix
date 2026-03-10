@@ -1,15 +1,104 @@
 import Header from "./Header";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { validateEmailSignIn, validateEmailSignUp } from "../utils/validate";
+import { auth } from "../utils/firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
+import { backgroundImage } from "../utils/constants";
 
 const Login = () => {
-  const [isSignIn, setIsSignIn] = useState(false);
+  const [isSignIn, setIsSignIn] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const email = useRef(null);
+  const password = useRef(null);
+  const full_name = useRef(null);
+  const phone = useRef(null);
+  const dispatch = useDispatch();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    console.log(full_name, phone);
+    const message = isSignIn
+      ? validateEmailSignIn(email.current.value, password.current.value)
+      : validateEmailSignUp(
+          email.current.value,
+          password.current.value,
+          full_name.current.value,
+          phone.current.value,
+        );
+    setErrorMessage(message);
+    if (message) return;
+    if (isSignIn) {
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value,
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log("==>>" + user);
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode);
+          console.log(errorCode, errorMessage);
+        });
+      console.log("Signing In");
+    } else {
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value,
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: full_name.current.value,
+          })
+            .then(() => {
+              const { uid, email, displayName } = auth;
+              dispatch(
+                addUser({ uid: uid, email: email, displayName: displayName }),
+              );
+              // Profile updated!
+              console.log("Profile Created");
+              setIsSignIn(true);
+              // ...
+            })
+            .catch((error) => {
+              // An error occurred
+              setErrorMessage(error.message);
+              // ...
+            });
+          console.log("==>>" + JSON.stringify(user));
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+        });
+
+      console.log("Signing Up");
+    }
+  };
+
   return (
     <div>
       <Header />
       <div>
         <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/75772f65-58b5-465f-b642-fa858b6168ca/web/IN-en-20260302-TRIFECTA-perspective_26418256-c5f3-4e9a-8160-a6b534228a2f_large.jpg"
+          src={backgroundImage}
           alt="background"
         />
       </div>
@@ -25,27 +114,37 @@ const Login = () => {
             <>
               <input
                 type="text"
+                ref={full_name}
                 placeholder="Full Name"
-                className="p-2 m-2 border rounded-md bg-black/70 font-medium"
+                className="p-2 m-2 border rounded-md bg-black/70 font-medium text-white"
               />
               <input
                 type="number"
+                ref={phone}
                 placeholder="Phone Number"
-                className="p-2 m-2 border rounded-md bg-black/70 font-medium"
+                className="p-2 m-2 border rounded-md bg-black/70 font-medium text-white"
               />
             </>
           ) : null}
           <input
             type="text"
+            ref={email}
             placeholder={isSignIn ? "Email or Phone Number" : "Email ID"}
-            className="p-2 m-2 border rounded-md bg-black/70 font-medium"
+            className="p-2 m-2 border rounded-md bg-black/70 font-medium text-white"
           />
           <input
             type="password"
+            ref={password}
             placeholder="Password"
-            className="p-2 m-2 border rounded-md bg-black/70 font-medium"
+            className="p-2 m-2 border rounded-md bg-black/70 font-medium text-white"
           />
-          <button className="p-4 m-4 bg-red-600 hover:bg-red-700  font-bold text-lg rounded-md text-white">
+          <p className="text-red-600 font-medium text-sm mx-2 py-2">
+            {errorMessage}
+          </p>
+          <button
+            className="p-4 m-4 bg-red-600 hover:bg-red-700  font-bold text-lg rounded-md text-white"
+            onClick={handleClick}
+          >
             {isSignIn ? "Sign In" : "Sign Up"}
           </button>
           {/* <label className="flex items-center gap-2 text-white">New to Netflix? <a href="#" className="text-white hover:underline">Sign up now.</a></label> */}
