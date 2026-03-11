@@ -56,7 +56,6 @@ const Header = () => {
           <div>TV Shows</div>
           <div>Movies</div>
         </div>
-        {console.log("User===>>" + JSON.stringify(user))}
         {user && (
           <div className="flex flex-row">
             <div className="flex flex-col p-2 m-2">
