@@ -52,4 +52,7 @@
 - Updated the store with trailer Video.
 - Created custom hook for playing trailer.
 - Embedded utube video.
+- Added the movie list Popular, Upcoming and Top Rated(custom hook).
+- Updated the movie Slice.
+- Added CSS so that page looks similar to that of Netflx.
 
