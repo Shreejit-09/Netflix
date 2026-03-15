@@ -13,10 +13,10 @@ const useMovieTrailer = ({movieId}) => {
     const data = await response.json();
     const trailer = data.results.find((video) => video.type === "Trailer");
     const trailer_id = trailer ? trailer.key : data.results[0]?.key;
-    const url = `https://www.youtube.com/embed/${trailer_id}?autoplay=1&mute=1&controls=0&loop=1&modestbranding=1`;
+    const url = `https://www.youtube.com/embed/${trailer_id}?autoplay=1&mute=1&controls=1&loop=1&modestbranding=1`;
     dispatch(addTrailerVideos(url));
   };
-  
+
   useEffect(() => {
     youtubeTrailerID();
   }, [movieId]);

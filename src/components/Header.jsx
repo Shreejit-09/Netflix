@@ -45,7 +45,7 @@ const Header = () => {
   };
   return (
     <div>
-      <div className="flex justify-between absolute px-8 py-2 bg-gradient-to-b from-black items-center w-full">
+      <div className="flex justify-between absolute px-8 py-2 bg-gradient-to-b from-black items-center w-full z-30">
         <div className="flex flex-row items-center text-white gap-8">
           <img
             className="w-44"
